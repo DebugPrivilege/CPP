@@ -147,6 +147,82 @@ VOID Check_DefenderService(wchar_t* user, wchar_t* host)
 	}
 }
 
+VOID Check_WdBoot(wchar_t* user, wchar_t* host)
+{
+	HKEY hKey;
+	DWORD data = 2;
+
+	// Open Registry Key Path
+	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Services\\WdBoot", 0, KEY_SET_VALUE, &hKey);
+
+	// Enabling WDigest
+	LONG setValue = RegSetValueExW(hKey, L"Start", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
+
+	if (setValue == ERROR_SUCCESS) {
+		std::cout << "[+] Successfully turned on Windows Defender Boot Driver" << std::endl;
+	}
+	else {
+		std::cout << "[-] Error in turning on Windows Defender Boot Driver. Service may already been running " << std::endl;
+	}
+}
+
+VOID Check_WdFilter(wchar_t* user, wchar_t* host)
+{
+	HKEY hKey;
+	DWORD data = 2;
+
+	// Open Registry Key Path
+	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Services\\WdFilter", 0, KEY_SET_VALUE, &hKey);
+
+	// Enabling WDigest
+	LONG setValue = RegSetValueExW(hKey, L"Start", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
+
+	if (setValue == ERROR_SUCCESS) {
+		std::cout << "[+] Successfully turned on Windows Defender Mini-Filter Driver" << std::endl;
+	}
+	else {
+		std::cout << "[-] Error in turning on Windows Defender Mini-Filter Driver. Service may already been running " << std::endl;
+	}
+}
+
+VOID Check_WdNisDrv(wchar_t* user, wchar_t* host)
+{
+	HKEY hKey;
+	DWORD data = 2;
+
+	// Open Registry Key Path
+	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Services\\WdNisDrv", 0, KEY_SET_VALUE, &hKey);
+
+	// Enabling WDigest
+	LONG setValue = RegSetValueExW(hKey, L"Start", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
+
+	if (setValue == ERROR_SUCCESS) {
+		std::cout << "[+] Successfully turned on Windows Defender Network Inspection System Driver" << std::endl;
+	}
+	else {
+		std::cout << "[-] Error in turning on Windows Defender Network Inspection System Driver. Service may already been running " << std::endl;
+	}
+}
+
+VOID Check_WdNisSvc(wchar_t* user, wchar_t* host)
+{
+	HKEY hKey;
+	DWORD data = 2;
+
+	// Open Registry Key Path
+	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Services\\WdNisDrv", 0, KEY_SET_VALUE, &hKey);
+
+	// Enabling WDigest
+	LONG setValue = RegSetValueExW(hKey, L"Start", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
+
+	if (setValue == ERROR_SUCCESS) {
+		std::cout << "[+] Successfully turned on Windows Defender Network Inspection Service" << std::endl;
+	}
+	else {
+		std::cout << "[-] Error in turning on Windows Defender Network Inspection Service. Service may already been running " << std::endl;
+	}
+}
+
 VOID RestartService(wchar_t* user, wchar_t* host)
 {
 	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
@@ -162,6 +238,86 @@ VOID RestartService(wchar_t* user, wchar_t* host)
 	else
 	{
 		std::cout << "[-] Failed to restart the WinDefend service. Service may already been running " << std::endl;
+	}
+	CloseHandle(pi.hProcess);
+	CloseHandle(pi.hThread);
+}
+
+VOID RestartWdBoot(wchar_t* user, wchar_t* host)
+{
+	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
+	wchar_t arg[] = L" start WdBoot";
+
+	STARTUPINFO si = { sizeof(si) };
+	PROCESS_INFORMATION pi;
+
+	BOOL restartWinDefend = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+	if (restartWinDefend) {
+		std::cout << "[+] Successfully started the Windows Defender Boot Driver " << std::endl;
+	}
+	else
+	{
+		std::cout << "[-] Failed to restart the Windows Defender Boot Driver. Service may already been running " << std::endl;
+	}
+	CloseHandle(pi.hProcess);
+	CloseHandle(pi.hThread);
+}
+
+VOID RestartWdFilter(wchar_t* user, wchar_t* host)
+{
+	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
+	wchar_t arg[] = L" start WdFilter";
+
+	STARTUPINFO si = { sizeof(si) };
+	PROCESS_INFORMATION pi;
+
+	BOOL restartWinDefend = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+	if (restartWinDefend) {
+		std::cout << "[+] Successfully started the Windows Defender Mini-Filter Driver " << std::endl;
+	}
+	else
+	{
+		std::cout << "[-] Failed to restart the Windows Defender Mini-Filter Driver. Service may already been running " << std::endl;
+	}
+	CloseHandle(pi.hProcess);
+	CloseHandle(pi.hThread);
+}
+
+VOID RestartWdNisDrv(wchar_t* user, wchar_t* host)
+{
+	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
+	wchar_t arg[] = L" start WdNisDrv";
+
+	STARTUPINFO si = { sizeof(si) };
+	PROCESS_INFORMATION pi;
+
+	BOOL restartWinDefend = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+	if (restartWinDefend) {
+		std::cout << "[+] Successfully started the Windows Defender Network Inspection System Driver " << std::endl;
+	}
+	else
+	{
+		std::cout << "[-] Failed to restart the Windows Defender Network Inspection System Driver. Service may already been running " << std::endl;
+	}
+	CloseHandle(pi.hProcess);
+	CloseHandle(pi.hThread);
+}
+
+VOID RestartWdNisSvc(wchar_t* user, wchar_t* host)
+{
+	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
+	wchar_t arg[] = L" start WdNisDrv";
+
+	STARTUPINFO si = { sizeof(si) };
+	PROCESS_INFORMATION pi;
+
+	BOOL restartWinDefend = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+	if (restartWinDefend) {
+		std::cout << "[+] Successfully started the Windows Defender Network Inspection Service " << std::endl;
+	}
+	else
+	{
+		std::cout << "[-] Failed to restart the Windows Defender Network Inspection Service. Service may already been running " << std::endl;
 	}
 	CloseHandle(pi.hProcess);
 	CloseHandle(pi.hThread);
@@ -1624,8 +1780,16 @@ int wmain(int argc, wchar_t* argv[])
 			RemoveDisableRoutineActionKey(user, NULL); // Remove DisableRoutineActionKey value
 			DisableLocalAdminMerge(user, NULL); // Remove DisableLocalAdminMerge value
 			TurnOnWinDefETW(user, NULL); // Turn on Microsoft-Windows-Defender/Operational if tampered
+			Check_WdBoot(user, NULL); // Turn on Windows Defender Boot Driver
+			Check_WdFilter(user, NULL); // Turn on Windows Defender Mini-Filter Driver
+			Check_WdNisDrv(user, NULL); // Turn on Windows Defender Network Inspection System Driver
+			Check_WdNisSvc(user, NULL); // Turn on Windows Defender Network Inspection System Service
 			Check_DefenderService(user, NULL); // Check if WinDefend service is running
 			RestartService(user, NULL); // Restart WinDefend service if it was previously turned off
+			RestartWdBoot(user, NULL); // Restart the WdBoot service
+			RestartWdFilter(user, NULL); // Restart the WdFilter service
+			RestartWdNisDrv(user, NULL); // Restart the WdNisDrv service
+			RestartWdNisSvc(user, NULL); // Restart the WdNisSvc service
 			TurnOnRTP(user, NULL); // Enable Real-Time Protection
 			TurnOnBehaviorMonitoring(user, NULL); // Enable Behavior Monitoring
 			TurnOnIOVA(user, NULL); // Enable IOVA Protection
@@ -1850,4 +2014,3 @@ int wmain(int argc, wchar_t* argv[])
 
 	return 0;
 }
-	
