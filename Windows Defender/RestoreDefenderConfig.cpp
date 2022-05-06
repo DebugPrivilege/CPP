@@ -210,7 +210,7 @@ VOID Check_WdNisSvc(wchar_t* user, wchar_t* host)
 	DWORD data = 2;
 
 	// Open Registry Key Path
-	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Services\\WdNisDrv", 0, KEY_SET_VALUE, &hKey);
+	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Services\\WdNisSvc", 0, KEY_SET_VALUE, &hKey);
 
 	// Enabling WDigest
 	LONG setValue = RegSetValueExW(hKey, L"Start", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
