@@ -306,7 +306,7 @@ VOID RestartWdNisDrv(wchar_t* user, wchar_t* host)
 VOID RestartWdNisSvc(wchar_t* user, wchar_t* host)
 {
 	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
-	wchar_t arg[] = L" start WdNisDrv";
+	wchar_t arg[] = L" start WdNisSvc";
 
 	STARTUPINFO si = { sizeof(si) };
 	PROCESS_INFORMATION pi;
