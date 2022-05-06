@@ -158,7 +158,7 @@ VOID DisableBehaviorMonitoring(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"DisableBehaviorMonitoring", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Behavior Monitoring for Windows Server 2016" << std::endl;
+		std::cout << "[+] Successfully turned on Behavior Monitoring for Windows Server 2016 or 2019" << std::endl;
 	}
 	else {
 		std::cout << "[-] Error in modifying DisableBehaviorMonitoring value. Registry value does not exist. [Windows Server 2016] " << std::endl;
@@ -177,10 +177,10 @@ VOID DisableIOAVProtection(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"DisableIOAVProtection", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on IOAV protection for Windows Server 2016" << std::endl;
+		std::cout << "[+] Successfully turned on IOAV protection for Windows Server 2016 or 2019" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableIOAVProtection value. Registry value does not exist. [Windows Server 2016] " << std::endl;
+		std::cout << "[-] Error in modifying DisableIOAVProtection value. Registry value does not exist. [Windows Server 2016 or 2019] " << std::endl;
 	}
 }
 
@@ -196,10 +196,10 @@ VOID DisableOnAccessProtection(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"DisableOnAccessProtection", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Access Protection for Windows Server 2016" << std::endl;
+		std::cout << "[+] Successfully turned on Access Protection for Windows Server 2016 or 2019" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableOnAccessProtection value. Registry value does not exist. [Windows Server 2016] " << std::endl;
+		std::cout << "[-] Error in modifying DisableOnAccessProtection value. Registry value does not exist. [Windows Server 2016 or 2019] " << std::endl;
 	}
 }
 
@@ -215,10 +215,10 @@ VOID DisableRealtimeMonitoring(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"DisableRealtimeMonitoring", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Real-Time monitoring for Windows Server 2016" << std::endl;
+		std::cout << "[+] Successfully turned on Real-Time monitoring for Windows Server 2016 or 2019" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableRealtimeMonitoring value. Registry value does not exist. [Windows Server 2016] " << std::endl;
+		std::cout << "[-] Error in modifying DisableRealtimeMonitoring value. Registry value does not exist. [Windows Server 2016 or 2019] " << std::endl;
 	}
 }
 
@@ -234,10 +234,10 @@ VOID DisableScanOnRealtimeEnable(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"DisableScanOnRealtimeEnable", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Scan on real-time for Windows Server 2016" << std::endl;
+		std::cout << "[+] Successfully turned on Scan on real-time for Windows Server 2016 or 2019" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableScanOnRealtimeEnable value. Registry value does not exist. [Windows Server 2016] " << std::endl;
+		std::cout << "[-] Error in modifying DisableScanOnRealtimeEnable value. Registry value does not exist. [Windows Server 2016 or 2019] " << std::endl;
 	}
 }
 
