@@ -1,5 +1,5 @@
 // DISCLAIMER: This was coded up to get the job done, so no. I will not make any change to it anymore.
-// Supported versions: Windows Server 2016 +
+// Supported version: Windows Server 2016 +
 
 // Description: RestoreDefenderConfig is primary meant for IR cases to perform tactical remediation. Think of cases where the threat actor starts tampering Defender, and you want to restore Defender AV.
 // The thought process behind is this is the following: Threat actor disabled Windows Defender across the environment and we want to restore the settings to a healthy state.
@@ -161,7 +161,7 @@ VOID DisableBehaviorMonitoring(wchar_t* user, wchar_t* host)
 		std::cout << "[+] Successfully turned on Behavior Monitoring for Windows Server 2016 or 2019" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableBehaviorMonitoring value. Registry value does not exist. [Windows Server 2016] " << std::endl;
+		std::cout << "[-] Error in modifying DisableBehaviorMonitoring value. Registry value does not exist. [Windows Server 2016/2019] " << std::endl;
 	}
 }
 
@@ -180,7 +180,7 @@ VOID DisableIOAVProtection(wchar_t* user, wchar_t* host)
 		std::cout << "[+] Successfully turned on IOAV protection for Windows Server 2016 or 2019" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableIOAVProtection value. Registry value does not exist. [Windows Server 2016 or 2019] " << std::endl;
+		std::cout << "[-] Error in modifying DisableIOAVProtection value. Registry value does not exist. [Windows Server 2016/2019] " << std::endl;
 	}
 }
 
@@ -199,7 +199,7 @@ VOID DisableOnAccessProtection(wchar_t* user, wchar_t* host)
 		std::cout << "[+] Successfully turned on Access Protection for Windows Server 2016 or 2019" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableOnAccessProtection value. Registry value does not exist. [Windows Server 2016 or 2019] " << std::endl;
+		std::cout << "[-] Error in modifying DisableOnAccessProtection value. Registry value does not exist. [Windows Server 2016/2019] " << std::endl;
 	}
 }
 
@@ -218,7 +218,7 @@ VOID DisableRealtimeMonitoring(wchar_t* user, wchar_t* host)
 		std::cout << "[+] Successfully turned on Real-Time monitoring for Windows Server 2016 or 2019" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableRealtimeMonitoring value. Registry value does not exist. [Windows Server 2016 or 2019] " << std::endl;
+		std::cout << "[-] Error in modifying DisableRealtimeMonitoring value. Registry value does not exist. [Windows Server 2016/2019] " << std::endl;
 	}
 }
 
@@ -237,7 +237,7 @@ VOID DisableScanOnRealtimeEnable(wchar_t* user, wchar_t* host)
 		std::cout << "[+] Successfully turned on Scan on real-time for Windows Server 2016 or 2019" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableScanOnRealtimeEnable value. Registry value does not exist. [Windows Server 2016 or 2019] " << std::endl;
+		std::cout << "[-] Error in modifying DisableScanOnRealtimeEnable value. Registry value does not exist. [Windows Server 2016/2019] " << std::endl;
 	}
 }
 
