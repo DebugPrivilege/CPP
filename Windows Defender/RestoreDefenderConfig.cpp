@@ -1,4 +1,5 @@
 // DISCLAIMER: This was coded up to get the job done, so no. I will not make any change to it anymore.
+// Supported version: Windows Server 2016 +
 
 // Description: RestoreDefenderConfig is primary meant for IR cases to perform tactical remediation. Think of cases where the threat actor starts tampering Defender, and you want to restore Defender AV.
 // The thought process behind is this is the following: Threat actor disabled Windows Defender across the environment and we want to restore the settings to a healthy state.
@@ -1985,6 +1986,7 @@ int wmain(int argc, wchar_t* argv[])
 			Check_DefenderService(user, NULL); // Check if WinDefend service is running
 			StartWinDefendService(); // Start WinDefend service
 			StartWdFilterService(); // Start WdFilter service
+			StartWdNisDrvService(); // Start WdNisDrv service
 			StartWdNisSvcService(); // Start WdNisSvc service
 			TurnOnRTP(user, NULL); // Enable Real-Time Protection
 			TurnOnBehaviorMonitoring(user, NULL); // Enable Behavior Monitoring
