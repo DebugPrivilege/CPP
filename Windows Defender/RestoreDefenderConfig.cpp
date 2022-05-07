@@ -1,5 +1,4 @@
 // DISCLAIMER: This was coded up to get the job done, so no. I will not make any change to it anymore.
-// Supported version: Windows Server 2016 +
 
 // Description: RestoreDefenderConfig is primary meant for IR cases to perform tactical remediation. Think of cases where the threat actor starts tampering Defender, and you want to restore Defender AV.
 // The thought process behind is this is the following: Threat actor disabled Windows Defender across the environment and we want to restore the settings to a healthy state.
@@ -279,25 +278,6 @@ VOID Check_DefenderService(wchar_t* user, wchar_t* host)
 	}
 }
 
-VOID Check_WdBoot(wchar_t* user, wchar_t* host)
-{
-	HKEY hKey;
-	DWORD data = 2;
-
-	// Open Registry Key Path
-	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Services\\WdBoot", 0, KEY_SET_VALUE, &hKey);
-
-	// Enabling WDigest
-	LONG setValue = RegSetValueExW(hKey, L"Start", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
-
-	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Windows Defender Boot Driver" << std::endl;
-	}
-	else {
-		std::cout << "[-] Error in turning on Windows Defender Boot Driver. Service may already been running " << std::endl;
-	}
-}
-
 VOID Check_WdFilter(wchar_t* user, wchar_t* host)
 {
 	HKEY hKey;
@@ -355,104 +335,184 @@ VOID Check_WdNisSvc(wchar_t* user, wchar_t* host)
 	}
 }
 
-VOID RestartService(wchar_t* user, wchar_t* host)
-{
-	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
-	wchar_t arg[] = L" start WinDefend";
+BOOL StartWinDefendService() {
+	// Get a handle to the SCM database. 
 
-	STARTUPINFO si = { sizeof(si) };
-	PROCESS_INFORMATION pi;
+	SC_HANDLE schSCManager = OpenSCManager(
+		NULL,                    // local computer
+		NULL,                    // servicesActive database 
+		SC_MANAGER_ALL_ACCESS);  // full access rights 
 
-	BOOL restartWinDefend = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
-	if (restartWinDefend) {
-		std::cout << "[+] Successfully started the WinDefend service " << std::endl;
-	}
-	else
+	// Get a handle to the service.
+
+	SC_HANDLE schService = OpenService(
+		schSCManager,         // SCM database 
+		L"WinDefend",  // name of service 
+		SERVICE_START);  // full access 
+
+	if (schService == NULL)
 	{
-		std::cout << "[-] Failed to restart the WinDefend service. Service may already been running " << std::endl;
+		std::cout << "[-] Could not open Service Manager [WinDefend]" << std::endl;
+		CloseServiceHandle(schSCManager);
+		return FALSE;
 	}
-	CloseHandle(pi.hProcess);
-	CloseHandle(pi.hThread);
+
+	// Attempt to start the service.
+
+	if (!StartService(
+		schService,  // handle to service 
+		0,           // number of arguments 
+		NULL))      // no arguments 
+	{
+		if (ERROR_SERVICE_ALREADY_RUNNING == GetLastError()) {
+			std::cout << "[+] WinDefend Service already running" << std::endl;
+		}
+		else {
+
+			std::cout << "[-] WinDefend Service failed" << std::endl;
+			CloseServiceHandle(schService);
+			CloseServiceHandle(schSCManager);
+			return FALSE;
+		}
+	}
+	CloseServiceHandle(schService);
+	CloseServiceHandle(schSCManager);
+	return TRUE;
 }
 
-VOID RestartWdBoot(wchar_t* user, wchar_t* host)
-{
-	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
-	wchar_t arg[] = L" start WdBoot";
+BOOL StartWdFilterService() {
+	// Get a handle to the SCM database. 
 
-	STARTUPINFO si = { sizeof(si) };
-	PROCESS_INFORMATION pi;
+	SC_HANDLE schSCManager = OpenSCManager(
+		NULL,                    // local computer
+		NULL,                    // servicesActive database 
+		SC_MANAGER_ALL_ACCESS);  // full access rights 
 
-	BOOL restartWinDefend = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
-	if (restartWinDefend) {
-		std::cout << "[+] Successfully started the Windows Defender Boot Driver " << std::endl;
-	}
-	else
+	// Get a handle to the service.
+
+	SC_HANDLE schService = OpenService(
+		schSCManager,         // SCM database 
+		L"WdFilter",  // name of service 
+		SERVICE_START);  // full access 
+
+	if (schService == NULL)
 	{
-		std::cout << "[-] Failed to restart the Windows Defender Boot Driver. Service may already been running " << std::endl;
+		std::cout << "[-] Could not open Service Manager [WdFilter]" << std::endl;
+		CloseServiceHandle(schSCManager);
+		return FALSE;
 	}
-	CloseHandle(pi.hProcess);
-	CloseHandle(pi.hThread);
+
+	// Attempt to start the service.
+
+	if (!StartService(
+		schService,  // handle to service 
+		0,           // number of arguments 
+		NULL))      // no arguments 
+	{
+		if (ERROR_SERVICE_ALREADY_RUNNING == GetLastError()) {
+			std::cout << "[+] WdFilter Service already running" << std::endl;
+		}
+		else {
+
+			std::cout << "[-] WdFilter Service failed" << std::endl;
+			CloseServiceHandle(schService);
+			CloseServiceHandle(schSCManager);
+			return FALSE;
+		}
+	}
+	CloseServiceHandle(schService);
+	CloseServiceHandle(schSCManager);
+	return TRUE;
 }
 
-VOID RestartWdFilter(wchar_t* user, wchar_t* host)
-{
-	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
-	wchar_t arg[] = L" start WdFilter";
+BOOL StartWdNisDrvService() {
+	// Get a handle to the SCM database. 
 
-	STARTUPINFO si = { sizeof(si) };
-	PROCESS_INFORMATION pi;
+	SC_HANDLE schSCManager = OpenSCManager(
+		NULL,                    // local computer
+		NULL,                    // servicesActive database 
+		SC_MANAGER_ALL_ACCESS);  // full access rights 
 
-	BOOL restartWinDefend = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
-	if (restartWinDefend) {
-		std::cout << "[+] Successfully started the Windows Defender Mini-Filter Driver " << std::endl;
-	}
-	else
+	// Get a handle to the service.
+
+	SC_HANDLE schService = OpenService(
+		schSCManager,         // SCM database 
+		L"WdNisDrv",  // name of service 
+		SERVICE_START);  // full access 
+
+	if (schService == NULL)
 	{
-		std::cout << "[-] Failed to restart the Windows Defender Mini-Filter Driver. Service may already been running " << std::endl;
+		std::cout << "[-] Could not open Service Manager [WdNisDrv]" << std::endl;
+		CloseServiceHandle(schSCManager);
+		return FALSE;
 	}
-	CloseHandle(pi.hProcess);
-	CloseHandle(pi.hThread);
+
+	// Attempt to start the service.
+
+	if (!StartService(
+		schService,  // handle to service 
+		0,           // number of arguments 
+		NULL))      // no arguments 
+	{
+		if (ERROR_SERVICE_ALREADY_RUNNING == GetLastError()) {
+			std::cout << "[+] WdNisDrv Service already running" << std::endl;
+		}
+		else {
+
+			std::cout << "[-] WdNisDrv Service failed" << std::endl;
+			CloseServiceHandle(schService);
+			CloseServiceHandle(schSCManager);
+			return FALSE;
+		}
+	}
+	CloseServiceHandle(schService);
+	CloseServiceHandle(schSCManager);
+	return TRUE;
 }
 
-VOID RestartWdNisDrv(wchar_t* user, wchar_t* host)
-{
-	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
-	wchar_t arg[] = L" start WdNisDrv";
+BOOL StartWdNisSvcService() {
+	// Get a handle to the SCM database. 
 
-	STARTUPINFO si = { sizeof(si) };
-	PROCESS_INFORMATION pi;
+	SC_HANDLE schSCManager = OpenSCManager(
+		NULL,                    // local computer
+		NULL,                    // servicesActive database 
+		SC_MANAGER_ALL_ACCESS);  // full access rights 
 
-	BOOL restartWinDefend = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
-	if (restartWinDefend) {
-		std::cout << "[+] Successfully started the Windows Defender Network Inspection System Driver " << std::endl;
-	}
-	else
+	// Get a handle to the service.
+
+	SC_HANDLE schService = OpenService(
+		schSCManager,         // SCM database 
+		L"WdNisSvc",  // name of service 
+		SERVICE_START);  // full access 
+
+	if (schService == NULL)
 	{
-		std::cout << "[-] Failed to restart the Windows Defender Network Inspection System Driver. Service may already been running " << std::endl;
+		std::cout << "[-] Could not open Service Manager [WdNisSvc]" << std::endl;
+		CloseServiceHandle(schSCManager);
+		return FALSE;
 	}
-	CloseHandle(pi.hProcess);
-	CloseHandle(pi.hThread);
-}
 
-VOID RestartWdNisSvc(wchar_t* user, wchar_t* host)
-{
-	wchar_t cmd[] = L"C:\\Windows\\System32\\sc.exe";
-	wchar_t arg[] = L" start WdNisSvc";
+	// Attempt to start the service.
 
-	STARTUPINFO si = { sizeof(si) };
-	PROCESS_INFORMATION pi;
-
-	BOOL restartWinDefend = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
-	if (restartWinDefend) {
-		std::cout << "[+] Successfully started the Windows Defender Network Inspection Service " << std::endl;
-	}
-	else
+	if (!StartService(
+		schService,  // handle to service 
+		0,           // number of arguments 
+		NULL))      // no arguments 
 	{
-		std::cout << "[-] Failed to restart the Windows Defender Network Inspection Service. Service may already been running " << std::endl;
+		if (ERROR_SERVICE_ALREADY_RUNNING == GetLastError()) {
+			std::cout << "[+] WdNisSvc Service already running" << std::endl;
+		}
+		else {
+
+			std::cout << "[-] WdNisSvc Service failed" << std::endl;
+			CloseServiceHandle(schService);
+			CloseServiceHandle(schSCManager);
+			return FALSE;
+		}
 	}
-	CloseHandle(pi.hProcess);
-	CloseHandle(pi.hThread);
+	CloseServiceHandle(schService);
+	CloseServiceHandle(schSCManager);
+	return TRUE;
 }
 
 VOID TurnOnRTP(wchar_t* user, wchar_t* host)
@@ -1919,16 +1979,13 @@ int wmain(int argc, wchar_t* argv[])
 			DisableRealtimeMonitoring(user, NULL); // Windows Server 2016
 			DisableScanOnRealtimeEnable(user, NULL); // Windows Server 2016
 			TurnOnWinDefETW(user, NULL); // Turn on Microsoft-Windows-Defender/Operational if tampered
-			Check_WdBoot(user, NULL); // Turn on Windows Defender Boot Driver
 			Check_WdFilter(user, NULL); // Turn on Windows Defender Mini-Filter Driver
 			Check_WdNisDrv(user, NULL); // Turn on Windows Defender Network Inspection System Driver
 			Check_WdNisSvc(user, NULL); // Turn on Windows Defender Network Inspection System Service
 			Check_DefenderService(user, NULL); // Check if WinDefend service is running
-			RestartService(user, NULL); // Restart WinDefend service if it was previously turned off
-			RestartWdBoot(user, NULL); // Restart the WdBoot service
-			RestartWdFilter(user, NULL); // Restart the WdFilter service
-			RestartWdNisDrv(user, NULL); // Restart the WdNisDrv service
-			RestartWdNisSvc(user, NULL); // Restart the WdNisSvc service
+			StartWinDefendService(); // Start WinDefend service
+			StartWdFilterService(); // Start WdFilter service
+			StartWdNisSvcService(); // Start WdNisSvc service
 			TurnOnRTP(user, NULL); // Enable Real-Time Protection
 			TurnOnBehaviorMonitoring(user, NULL); // Enable Behavior Monitoring
 			TurnOnIOVA(user, NULL); // Enable IOVA Protection
