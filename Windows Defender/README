@@ -40,7 +40,7 @@ The –listAll is a parameter used to list all the items that have been quaranti
 Get active and past malware threats
 
 [--getFiles]
-The –getFiles parameter is used to obtain diagnostic data from Windows Defender AV. This can be useful forensic artifacts based on Windows Defender telemetry.
+The –getFiles parameter is used to obtain diagnostic data from Windows Defender AV. This can be useful forensic artifacts based on Windows Defender telemetry. The .cab file contains useful information, which will be stored here: C:\ProgramData\Microsoft\Windows Defender\Support\MpSupportFiles.cab
 
 - How to deploy this binary?
 
