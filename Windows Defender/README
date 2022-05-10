@@ -52,7 +52,7 @@ The second step is to open Group Policy Management Console (GPMC) and follow the
 •	Right-click Scheduled tasks, point to New, and then click Immediate Task (At least Windows 7).
 •	In the Task window that opens, go to the General tab. Under Security options click Change User or Group and type SYSTEM and then click Check Names then OK. NT AUTHORITY\SYSTEM appears as the user account the task will run as.
 •	Select Run whether user is logged on or not
-•	Go to the Actions tab and click New… Ensure that Start a program is selected in the Action field. Enter the location of the shared Sysmon config.
+•	Go to the Actions tab and click New… Ensure that Start a program is selected in the Action field. 
 
 Example:
 
