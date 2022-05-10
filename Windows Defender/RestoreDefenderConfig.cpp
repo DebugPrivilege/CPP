@@ -158,10 +158,10 @@ VOID DisableBehaviorMonitoring(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"DisableBehaviorMonitoring", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Behavior Monitoring for Windows Server 2016 or 2019" << std::endl;
+		std::cout << "[+] Successfully turned on Behavior Monitoring" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableBehaviorMonitoring value. Registry value does not exist. [Windows Server 2016/2019] " << std::endl;
+		std::cout << "[-] Error in modifying DisableBehaviorMonitoring value. Registry value does not exist. " << std::endl;
 	}
 }
 
@@ -177,10 +177,10 @@ VOID DisableIOAVProtection(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"DisableIOAVProtection", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on IOAV protection for Windows Server 2016 or 2019" << std::endl;
+		std::cout << "[+] Successfully turned on IOAV protection " << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableIOAVProtection value. Registry value does not exist. [Windows Server 2016/2019] " << std::endl;
+		std::cout << "[-] Error in modifying DisableIOAVProtection value. Registry value does not exist.  " << std::endl;
 	}
 }
 
@@ -196,10 +196,10 @@ VOID DisableOnAccessProtection(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"DisableOnAccessProtection", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Access Protection for Windows Server 2016 or 2019" << std::endl;
+		std::cout << "[+] Successfully turned on Access Protection " << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableOnAccessProtection value. Registry value does not exist. [Windows Server 2016/2019] " << std::endl;
+		std::cout << "[-] Error in modifying DisableOnAccessProtection value. Registry value does not exist.  " << std::endl;
 	}
 }
 
@@ -215,10 +215,10 @@ VOID DisableRealtimeMonitoring(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"DisableRealtimeMonitoring", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Real-Time monitoring for Windows Server 2016 or 2019" << std::endl;
+		std::cout << "[+] Successfully turned on Real-Time monitoring " << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableRealtimeMonitoring value. Registry value does not exist. [Windows Server 2016/2019] " << std::endl;
+		std::cout << "[-] Error in modifying DisableRealtimeMonitoring value. Registry value does not exist.  " << std::endl;
 	}
 }
 
@@ -234,10 +234,10 @@ VOID DisableScanOnRealtimeEnable(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"DisableScanOnRealtimeEnable", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Scan on real-time for Windows Server 2016 or 2019" << std::endl;
+		std::cout << "[+] Successfully turned on Scan on real-time protection" << std::endl;
 	}
 	else {
-		std::cout << "[-] Error in modifying DisableScanOnRealtimeEnable value. Registry value does not exist. [Windows Server 2016/2019] " << std::endl;
+		std::cout << "[-] Error in modifying DisableScanOnRealtimeEnable value. Registry value does not exist.  " << std::endl;
 	}
 }
 
@@ -253,86 +253,10 @@ VOID TurnOnWinDefETW(wchar_t* user, wchar_t* host)
 	LONG setValue = RegSetValueExW(hKey, L"	Enabled", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
 
 	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Microsoft-Windows-Defender//Operational" << std::endl;
+		std::cout << "[+] Successfully turned on Microsoft-Windows-Defender/Operational" << std::endl;
 	}
 	else {
 		std::cout << "[-] Error in turning on Windows Defender ETW. ETW Provider already enabled " << std::endl;
-	}
-}
-
-VOID Check_DefenderService(wchar_t* user, wchar_t* host)
-{
-	HKEY hKey;
-	DWORD data = 2;
-
-	// Open Registry Key Path
-	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\services\\WinDefend", 0, KEY_SET_VALUE, &hKey);
-
-	// Enabling WDigest
-	LONG setValue = RegSetValueExW(hKey, L"Start", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
-
-	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Windows Defender Service" << std::endl;
-	}
-	else {
-		std::cout << "[-] Error in turning on Windows Defender Service. Service may already been running " << std::endl;
-	}
-}
-
-VOID Check_WdFilter(wchar_t* user, wchar_t* host)
-{
-	HKEY hKey;
-	DWORD data = 2;
-
-	// Open Registry Key Path
-	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Services\\WdFilter", 0, KEY_SET_VALUE, &hKey);
-
-	// Enabling WDigest
-	LONG setValue = RegSetValueExW(hKey, L"Start", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
-
-	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Windows Defender Mini-Filter Driver" << std::endl;
-	}
-	else {
-		std::cout << "[-] Error in turning on Windows Defender Mini-Filter Driver. Service may already been running " << std::endl;
-	}
-}
-
-VOID Check_WdNisDrv(wchar_t* user, wchar_t* host)
-{
-	HKEY hKey;
-	DWORD data = 2;
-
-	// Open Registry Key Path
-	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Services\\WdNisDrv", 0, KEY_SET_VALUE, &hKey);
-
-	// Enabling WDigest
-	LONG setValue = RegSetValueExW(hKey, L"Start", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
-
-	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Windows Defender Network Inspection System Driver" << std::endl;
-	}
-	else {
-		std::cout << "[-] Error in turning on Windows Defender Network Inspection System Driver. Service may already been running " << std::endl;
-	}
-}
-
-VOID Check_WdNisSvc(wchar_t* user, wchar_t* host)
-{
-	HKEY hKey;
-	DWORD data = 2;
-
-	// Open Registry Key Path
-	LONG openReg = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Services\\WdNisSvc", 0, KEY_SET_VALUE, &hKey);
-
-	// Enabling WDigest
-	LONG setValue = RegSetValueExW(hKey, L"Start", 0, REG_DWORD, (LPBYTE)&data, sizeof(data));
-
-	if (setValue == ERROR_SUCCESS) {
-		std::cout << "[+] Successfully turned on Windows Defender Network Inspection Service" << std::endl;
-	}
-	else {
-		std::cout << "[-] Error in turning on Windows Defender Network Inspection Service. Service may already been running " << std::endl;
 	}
 }
 
@@ -526,7 +450,7 @@ VOID TurnOnRTP(wchar_t* user, wchar_t* host)
 
 	BOOL EnableRTP = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
 	if (EnableRTP) {
-		std::cout << "[+] Successfully enabled Real-Time Protection." << std::endl;
+		std::cout << "[+] Successfully enabled Real-Time Protection " << std::endl;
 	}
 	else
 	{
@@ -546,7 +470,7 @@ VOID TurnOnBehaviorMonitoring(wchar_t* user, wchar_t* host)
 
 	BOOL EnableBM = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
 	if (EnableBM) {
-		std::cout << "[+] Successfully enabled Behavior Monitoring. " << std::endl;
+		std::cout << "[+] Successfully enabled Behavior Monitoring " << std::endl;
 	}
 	else
 	{
@@ -566,11 +490,11 @@ VOID TurnOnIOVA(wchar_t* user, wchar_t* host)
 
 	BOOL EnableIOVA = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
 	if (EnableIOVA) {
-		std::cout << "[+] Successfully enabled IOVA Protection. " << std::endl;
+		std::cout << "[+] Successfully enabled IOVA Protection " << std::endl;
 	}
 	else
 	{
-		std::cout << "[-] Error in turning on IOVA Protection. " << std::endl;
+		std::cout << "[-] Error in turning on IOVA Protection " << std::endl;
 	}
 	CloseHandle(pi.hProcess);
 	CloseHandle(pi.hThread);
@@ -586,7 +510,7 @@ VOID EnableScriptScanning(wchar_t* user, wchar_t* host)
 
 	BOOL EnableRTP = CreateProcessW(cmd, arg, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
 	if (EnableRTP) {
-		std::cout << "[+] Successfully enabled Script Scanning." << std::endl;
+		std::cout << "[+] Successfully enabled Script Scanning " << std::endl;
 	}
 	else
 	{
@@ -1980,10 +1904,6 @@ int wmain(int argc, wchar_t* argv[])
 			DisableRealtimeMonitoring(user, NULL); // Windows Server 2016
 			DisableScanOnRealtimeEnable(user, NULL); // Windows Server 2016
 			TurnOnWinDefETW(user, NULL); // Turn on Microsoft-Windows-Defender/Operational if tampered
-			Check_WdFilter(user, NULL); // Turn on Windows Defender Mini-Filter Driver
-			Check_WdNisDrv(user, NULL); // Turn on Windows Defender Network Inspection System Driver
-			Check_WdNisSvc(user, NULL); // Turn on Windows Defender Network Inspection System Service
-			Check_DefenderService(user, NULL); // Check if WinDefend service is running
 			StartWinDefendService(); // Start WinDefend service
 			StartWdFilterService(); // Start WdFilter service
 			StartWdNisDrvService(); // Start WdNisDrv service
