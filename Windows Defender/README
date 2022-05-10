@@ -10,6 +10,8 @@ We often only need to use the –start parameter, which is used to restore Windo
 Supported OS: Windows Server 2016 | Windows Server 2019 | Windows Server 2022 | Windows 10 
 Unsupported OS: Windows Server 2012 <=
 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
 [Command-line options]
 
 [--start]
