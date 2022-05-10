@@ -7,6 +7,9 @@ I’ve decided to code something up, which is meant to restore Windows Defender 
 This tool has been tested on Windows Server 2016, 2019 and 2022. Not just on the server side, but also on Windows 10 clients. 
 We often only need to use the –start parameter, which is used to restore Windows Defender AV configurations. 
 
+Supported OS: Windows Server 2016 | Windows Server 2019 | Windows Server 2022 | Windows 10 
+Unsupported OS: Windows Server 2012 <=
+
 [Command-line options]
 
 [--start]
