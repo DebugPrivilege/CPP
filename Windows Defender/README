@@ -1,9 +1,66 @@
-[Restoring Windows Defender from tampering]
+Description:
 
 During IR engagements, we have seen plenty of times that threat actors are tampering Windows Defender AV. This makes it easier to roll out ransomware or executing malicious tools for example. 
 There are real cases, such as the HIVE or LockBit ransomware cases. Where we have seen evidence of this ransomware tampering Windows Defender.
 I’ve decided to code something up, which is meant to restore Windows Defender AV in a healthy state, after it has been tampered. 
+
 This tool has been tested on Windows Server 2016, 2019 and 2022. Not just on the server side, but also on Windows 10 clients. 
-We often only need to use the –start parameter, which is used to restore Windows Defender AV configurations. However, I’ve decided to add some additional features.
-In this document, we will be going through all the features and explain how to deploy the binary and how to use it, etc. 
+We often only need to use the –start parameter, which is used to restore Windows Defender AV configurations. 
+
+[Command-line options]
+
+[--start]
+The –start command is used to restore Windows Defender settings. 
+
+[--removeThreats]
+Using the –removeThreats will remove the automatic remediation action that is specified for high and severe severity alerts.
+
+[--removeAllThreats]
+Using the –-removeAllThreats will remove the automatic remediation action that is specified for any alert. Regardless of the severity of it.
+
+[--removeAllExclusions]
+Using the –removeAllExclusions will remove a broad list of common exclusions that threat actors like to configure to exclude directories and extensions to evade AV.
+
+[--removeAllExtensions]
+Using the –removeAllExtensions will remove all the broad extensions that threat actors configuring to evade AV.
+
+[--removeAllDirectories]
+Using the –removeAllDirectories will remove the common directories that threat actors like to stage their tools for example.
+
+[--quickScan]
+The –quickScan parameter is used to run a quick AV scan.
+
+[--fullScan]
+The -fullScan parameter is used to run a full AV scan.
+
+[--listAll]
+The –listAll is a parameter used to list all the items that have been quarantined by Windows Defender AV.
+
+[--getThreats]
+Get active and past malware threats
+
+[--getFiles]
+The –getFiles parameter is used to obtain diagnostic data from Windows Defender AV. This can be useful forensic artifacts based on Windows Defender telemetry.
+
+- How to deploy this binary?
+
+The first step is to put this binary somewhere that is accessible for every domain computer. In this example, we’ll be using SYSVOL.
+
+The second step is to open Group Policy Management Console (GPMC) and follow the following steps:
+•	Create a Group Policy Object and give it a nice name
+•	In the Group Policy Management Editor, go to Computer configuration, then Preferences, and then Control panel settings.
+•	Right-click Scheduled tasks, point to New, and then click Immediate Task (At least Windows 7).
+•	In the Task window that opens, go to the General tab. Under Security options click Change User or Group and type SYSTEM and then click Check Names then OK. NT AUTHORITY\SYSTEM appears as the user account the task will run as.
+•	Select Run whether user is logged on or not
+•	Go to the Actions tab and click New… Ensure that Start a program is selected in the Action field. Enter the location of the shared Sysmon config.
+
+Example:
+
+Program/script: \\DC\SYSVOL\RestoreDefenderConfig.exe
+Add arguments(optional): --start
+
+
+
+
+
 
