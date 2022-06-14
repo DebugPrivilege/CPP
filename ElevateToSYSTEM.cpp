@@ -50,7 +50,7 @@ VOID ObtainToken(int TargetPID)
 
 	hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, TRUE, TargetPID);
 
-	OpenToken = OpenProcessToken(hProcess, TOKEN_DUPLICATE | TOKEN_QUERY, &TokenHandle);
+	OpenToken = OpenProcessToken(hProcess, TOKEN_DUPLICATE, &TokenHandle);
 	Duplicate = DuplicateTokenEx(TokenHandle, TOKEN_ADJUST_DEFAULT | TOKEN_ADJUST_SESSIONID | TOKEN_QUERY | TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY, NULL, SecurityImpersonation, TokenPrimary, &NewToken);
 
 
